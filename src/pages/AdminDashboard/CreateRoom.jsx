@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import BaseUrl from '../../BaseUrl';
 import axios from 'axios';
 
 function CreateRoom() {
@@ -10,8 +11,33 @@ function CreateRoom() {
         room_type_id: ''
     });
 
+    const [facilities, setFacilities] = useState([]);
+    const [roomTypes, setRoomTypes] = useState([]);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
+
+    const token = localStorage.getItem('access_token');
+
+    useEffect(() => {
+        const fetchDropdownData = async () => {
+            try {
+                const [facRes, roomTypeRes] = await Promise.all([
+                    axios.get(`${BaseUrl}/accommodation/?skip=0&limit=10`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    }),
+                    axios.get(`${BaseUrl}/room_types/?skip=0&limit=10`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    })
+                ]);
+                setFacilities(facRes.data);
+                setRoomTypes(roomTypeRes.data);
+            } catch (error) {
+                console.error("Failed to fetch dropdown data", error);
+            }
+        };
+
+        fetchDropdownData();
+    }, [token]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -23,7 +49,6 @@ function CreateRoom() {
         setLoading(true);
         setMessage('');
 
-        const token = localStorage.getItem('access_token');
         if (!token) {
             setMessage('Access token not found!');
             setLoading(false);
@@ -31,8 +56,8 @@ function CreateRoom() {
         }
 
         try {
-            const response = await axios.post(
-                'https://bjikmudtgz.ap.loclx.io/api/v1/rooms/',
+            await axios.post(
+                `${BaseUrl}/rooms/`,
                 {
                     ...formData,
                     capacity: parseInt(formData.capacity),
@@ -112,29 +137,39 @@ function CreateRoom() {
                 </div>
 
                 <div className="mb-3">
-                    <label className="form-label">Facility ID</label>
-                    <input
-                        type="number"
-                        className="form-control"
+                    <label className="form-label">Facility</label>
+                    <select
+                        className="form-select"
                         name="facility_id"
                         value={formData.facility_id}
                         onChange={handleChange}
                         required
-                        min="0"
-                    />
+                    >
+                        <option value="">Select Facility</option>
+                        {facilities.map(facility => (
+                            <option key={facility.id} value={facility.id}>
+                                {facility.name || `Facility #${facility.id}`}
+                            </option>
+                        ))}
+                    </select>
                 </div>
 
                 <div className="mb-4">
-                    <label className="form-label">Room Type ID</label>
-                    <input
-                        type="number"
-                        className="form-control"
+                    <label className="form-label">Room Type</label>
+                    <select
+                        className="form-select"
                         name="room_type_id"
                         value={formData.room_type_id}
                         onChange={handleChange}
                         required
-                        min="0"
-                    />
+                    >
+                        <option value="">Select Room Type</option>
+                        {roomTypes.map(type => (
+                            <option key={type.id} value={type.id}>
+                                {type.type_name || `Type #${type.id}`}
+                            </option>
+                        ))}
+                    </select>
                 </div>
 
                 <button type="submit" className="btn btn-primary w-100" disabled={loading}>

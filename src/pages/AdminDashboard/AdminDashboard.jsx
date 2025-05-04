@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import CreateAccommodation from './CreateAccomodation';
-import ViewAccommodation from './ViewAccomodation';
-import CreateRoom from './CreateRoom';
-import ViewRooms from './ViewRooms';
-import CreateNewRoomType from './CreateNewRoomType';
-import ViewRoomTypes from './ViewRoomTypes';
-import ViewAllRequests from './ViewAllRequests';
+import CreateAccommodation from './create/CreateAccomodation';
+import ViewAccommodation from './view/ViewAccomodation';
+import CreateRoom from './create/CreateRoom';
+import ViewRooms from './view/ViewRooms';
+import CreateNewRoomType from './create/CreateNewRoomType';
+import ViewRoomTypes from './view/ViewRoomTypes';
+import ViewAllRequests from './view/ViewAllRequests';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import CreateRoomAllocation from './create/CreateRoomAllocation';
+import ViewRoomAllocations from './view/ViewRoomAllocations';
+import CreateEventCategory from './create/CreateEventCategory';
+import ViewEventCategories from './view/ViewEventCategories';
+import CreateVenue from './create/CreateVenue';
+import ViewVenues from './view/ViewVenues';
+import CreateEvent from './create/CreateEvent';
+import ViewEnents from './view/ViewEnents';
 
 function AdminDashboard() {
     const [activeComponent, setActiveComponent] = useState('create');
@@ -27,6 +35,22 @@ function AdminDashboard() {
                 return <ViewRooms />;
             case 'viewAllRequests':
                 return <ViewAllRequests />;
+            case 'createRoomAllocation':
+                return <CreateRoomAllocation />;
+            case 'viewRoomAllocations':
+                return <ViewRoomAllocations />;
+            case 'createEventCategory':
+                return <CreateEventCategory />;
+            case 'viewEventCategories':
+                return <ViewEventCategories />;
+            case 'createVenue':
+                return <CreateVenue />;
+            case 'viewVenues':
+                return <ViewVenues />;
+            case 'createEvent':
+                return <CreateEvent />;
+            case 'viewEvents':
+                return <ViewEnents />;
             default:
                 return <h4 className="text-center">Please select an option</h4>;
         }
@@ -205,6 +229,102 @@ function Sidebar({ setActiveComponent }) {
                     <li>
                         <button className="dropdown-item" onClick={(e) => handleMenuItemClick('viewAllRequests', e)}>
                             📄 View All Requests
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            {/* Create Room Allocations */}
+            <div className="dropdown mb-3">
+                <button
+                    className="btn btn-secondary dropdown-toggle w-100 text-start"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    style={{ backgroundColor: '#2b2b3d', borderColor: '#2b2b3d' }}
+                >
+                    🛌 Room Allocations
+                </button>
+                <ul className="dropdown-menu w-100">
+                    <li>
+                        <button className="dropdown-item" onClick={(e) => handleMenuItemClick('createRoomAllocation', e)}>
+                            ➕ Create Room Allocation
+                        </button>
+                    </li>
+                    <li>
+                        <button className="dropdown-item" onClick={(e) => handleMenuItemClick('viewRoomAllocations', e)}>
+                            📄 View Room Allocations
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            {/* Event Categories */}
+            <div className="dropdown mb-3">
+                <button
+                    className="btn btn-secondary dropdown-toggle w-100 text-start"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    style={{ backgroundColor: '#2b2b3d', borderColor: '#2b2b3d' }}
+                >
+                    🛌 Event Categories
+                </button>
+                <ul className="dropdown-menu w-100">
+                    <li>
+                        <button className="dropdown-item" onClick={(e) => handleMenuItemClick('createEventCategory', e)}>
+                            ➕ Create Event Category
+                        </button>
+                    </li>
+                    <li>
+                        <button className="dropdown-item" onClick={(e) => handleMenuItemClick('viewEventCategories', e)}>
+                            📄 View Event Categories
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            {/* Events */}
+            <div className="dropdown mb-3">
+                <button
+                    className="btn btn-secondary dropdown-toggle w-100 text-start"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    style={{ backgroundColor: '#2b2b3d', borderColor: '#2b2b3d' }}
+                >
+                    🛌 Events
+                </button>
+                <ul className="dropdown-menu w-100">
+                    <li>
+                        <button className="dropdown-item" onClick={(e) => handleMenuItemClick('createEvent', e)}>
+                            ➕ Create Event
+                        </button>
+                    </li>
+                    <li>
+                        <button className="dropdown-item" onClick={(e) => handleMenuItemClick('viewEvents', e)}>
+                            📄 View Events
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            {/* Venues */}
+            <div className="dropdown mb-3">
+                <button
+                    className="btn btn-secondary dropdown-toggle w-100 text-start"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    style={{ backgroundColor: '#2b2b3d', borderColor: '#2b2b3d' }}
+                >
+                    🛌 Venues
+                </button>
+                <ul className="dropdown-menu w-100">
+                    <li>
+                        <button className="dropdown-item" onClick={(e) => handleMenuItemClick('createVenue', e)}>
+                            ➕ Create Venue
+                        </button>
+                    </li>
+                    <li>
+                        <button className="dropdown-item" onClick={(e) => handleMenuItemClick('viewVenues', e)}>
+                            📄 View Venues
                         </button>
                     </li>
                 </ul>

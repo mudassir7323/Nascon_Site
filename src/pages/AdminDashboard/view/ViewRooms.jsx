@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import BaseUrl from '../../BaseUrl';
+import BaseUrl from '../../../BaseUrl';
 import axios from 'axios';
-import EditRoom from './EditRoom';
+import EditRoom from '../edit/EditRoom';
 
 function ViewRooms() {
     const [rooms, setRooms] = useState([]);

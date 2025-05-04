@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import BaseUrl from '../../BaseUrl';
+import BaseUrl from '../../../BaseUrl';
 
 function EditRoom({ id }) {
     const [formData, setFormData] = useState({

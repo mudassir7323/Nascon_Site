@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import EditAccommodation from './EditAccommodation';
-import BaseUrl from '../../BaseUrl';
+import EditAccommodation from '../edit/EditAccommodation';
+import BaseUrl from '../../../BaseUrl';
 
 function ViewAccommodation() {
     const [accommodations, setAccommodations] = useState([]);

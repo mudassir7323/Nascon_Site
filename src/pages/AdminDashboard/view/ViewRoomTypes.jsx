@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import EditRoomType from './EditRoomType';
-import BaseUrl from '../../BaseUrl';
+import EditRoomType from '../edit/EditRoomType';
+import BaseUrl from '../../../BaseUrl';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 

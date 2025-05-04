@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import BaseUrl from '../../BaseUrl';
+import BaseUrl from '../../../BaseUrl';
 
 function CreateAccommodation() {
     const [formData, setFormData] = useState({

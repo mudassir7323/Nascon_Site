@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import BaseUrl from "../../BaseUrl";
+import BaseUrl from "../../../BaseUrl";
 
 function ViewAllRequests() {
     const [requests, setRequests] = useState([]);

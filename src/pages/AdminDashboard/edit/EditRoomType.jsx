@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import BaseUrl from '../../BaseUrl';
+import BaseUrl from '../../../BaseUrl';
 import axios from 'axios';
 
 

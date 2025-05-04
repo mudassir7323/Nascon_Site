@@ -14,7 +14,7 @@ import ViewEventCategories from './view/ViewEventCategories';
 import CreateVenue from './create/CreateVenue';
 import ViewVenues from './view/ViewVenues';
 import CreateEvent from './create/CreateEvent';
-import ViewEnents from './view/ViewEnents';
+import ViewEvents from './view/ViewEvents';
 
 function AdminDashboard() {
     const [activeComponent, setActiveComponent] = useState('create');
@@ -50,7 +50,7 @@ function AdminDashboard() {
             case 'createEvent':
                 return <CreateEvent />;
             case 'viewEvents':
-                return <ViewEnents />;
+                return <ViewEvents />;
             default:
                 return <h4 className="text-center">Please select an option</h4>;
         }
@@ -167,6 +167,26 @@ function Sidebar({ setActiveComponent }) {
                 </ul>
             </div>
 
+            {/* Accommodation Request */}
+            <div className="dropdown mb-3">
+                <button
+                    className="btn btn-secondary dropdown-toggle w-100 text-start"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    style={{ backgroundColor: '#2b2b3d', borderColor: '#2b2b3d' }}
+                >
+                    🛌 Accommodation Request
+                </button>
+                <ul className="dropdown-menu w-100">
+                    <li>
+                        <button className="dropdown-item" onClick={(e) => handleMenuItemClick('viewAllRequests', e)}>
+                            📄 View All Requests
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+
             {/* Room Types Dropdown */}
             <div className="dropdown mb-3">
                 <button
@@ -215,25 +235,6 @@ function Sidebar({ setActiveComponent }) {
                 </ul>
             </div>
 
-            {/* Accommodation Request */}
-            <div className="dropdown mb-3">
-                <button
-                    className="btn btn-secondary dropdown-toggle w-100 text-start"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    style={{ backgroundColor: '#2b2b3d', borderColor: '#2b2b3d' }}
-                >
-                    🛌 Accommodation Request
-                </button>
-                <ul className="dropdown-menu w-100">
-                    <li>
-                        <button className="dropdown-item" onClick={(e) => handleMenuItemClick('viewAllRequests', e)}>
-                            📄 View All Requests
-                        </button>
-                    </li>
-                </ul>
-            </div>
-
             {/* Create Room Allocations */}
             <div className="dropdown mb-3">
                 <button
@@ -245,11 +246,11 @@ function Sidebar({ setActiveComponent }) {
                     🛌 Room Allocations
                 </button>
                 <ul className="dropdown-menu w-100">
-                    <li>
+                    {/* <li>
                         <button className="dropdown-item" onClick={(e) => handleMenuItemClick('createRoomAllocation', e)}>
                             ➕ Create Room Allocation
                         </button>
-                    </li>
+                    </li> */}
                     <li>
                         <button className="dropdown-item" onClick={(e) => handleMenuItemClick('viewRoomAllocations', e)}>
                             📄 View Room Allocations
@@ -293,11 +294,11 @@ function Sidebar({ setActiveComponent }) {
                     🛌 Events
                 </button>
                 <ul className="dropdown-menu w-100">
-                    <li>
+                    {/* <li>
                         <button className="dropdown-item" onClick={(e) => handleMenuItemClick('createEvent', e)}>
                             ➕ Create Event
                         </button>
-                    </li>
+                    </li> */}
                     <li>
                         <button className="dropdown-item" onClick={(e) => handleMenuItemClick('viewEvents', e)}>
                             📄 View Events

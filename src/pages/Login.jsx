@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import BaseUrl from '../BaseUrl';
 import { useNavigate } from 'react-router-dom';
+import { isAdmin } from '../utils/authUtils';
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -31,10 +32,52 @@ const Login = () => {
       }
 
       // Handle successful login here
+      console.log('Login successful, setting access token');
       localStorage.setItem('access_token', data.access_token);
-      nav("/");
-      // You can add navigation or token storage logic here
-      
+      try {
+        // Fetch user data with the token
+        console.log('Fetching user data with token');
+        const user_response = await fetch(`${BaseUrl}/users/me`, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${data.access_token}`
+          },
+        });
+
+        if (!user_response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+
+        const user_data = await user_response.json();
+        console.log('User data received:', user_data); // Log user data for debugging
+        localStorage.setItem('user', JSON.stringify(user_data));
+        console.log('User data saved to localStorage');
+
+      } catch(err) {
+      console.error('Failed to validate token:', err);
+      setError('Failed to validate token. Please try again.');
+      setLoading(false);
+      return;
+    }
+      // Check if the user is an admin using our utility function
+      if (isAdmin()) {
+        // If user is an admin, navigate to admin dashboard
+        nav("/AdminDashboard");
+      } else {
+        // If not an admin, navigate to home page
+        nav("/");
+      }
+
+      // Force a re-render of components by triggering a custom event
+      console.log('Dispatching storage event to update UI');
+      // Use StorageEvent for better browser compatibility
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'user',
+        newValue: localStorage.getItem('user')
+      }));
+
     } catch (err) {
       setError(err.message || 'An error occurred during login');
     } finally {
@@ -92,16 +135,16 @@ const Login = () => {
                   />
                 </div>
                 <div className="mb-3 form-check">
-                  <input 
-                    type="checkbox" 
-                    className="form-check-input" 
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
                     id="remember"
                     disabled={loading}
                   />
                   <label className="form-check-label" htmlFor="remember">Remember me</label>
                 </div>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="btn btn-primary w-100"
                   disabled={loading}
                 >

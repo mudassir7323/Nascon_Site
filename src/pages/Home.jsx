@@ -17,11 +17,11 @@ const SocitalPics = [
 ];
 
 const QawaliNight = [
-  'Qawali1.jpeg',
-  'Qawali2.jpg',
-  'Qawali3.jpg',
-  'Qawali4.jpg',
-  'Qawali5.jpg',
+  'Qawali1.JPG',
+  'Qawali2.JPG',
+  'Qawali3.JPG',
+  'Qawali4.JPG',
+  'Qawali5.JPG',
 ]
 
 function Home() {
@@ -84,7 +84,7 @@ function Home() {
       <h2 className="section-title">Featured Events</h2>
       <div className="cards-container">
         <div className='card1'>
-          <div className="card-img" style={{ backgroundImage: `url(/Qawali1.jpeg)` }}></div>
+          <div className="card-img" style={{ backgroundImage: `url(/Qawali1.JPG)` }}></div>
           <h1>Qawali Night</h1>
           <p>The Vibrant Qawali Night brings you closer to the soul of Traditional Music</p>
           <p className="event-date">October 15, 2023 | 7:00 PM</p>
@@ -94,7 +94,7 @@ function Home() {
         </div>
 
         <div className='card1'>
-          <div className="card-img" style={{ backgroundImage: `url(/concert.jpg)` }}></div>
+          <div className="card-img" style={{ backgroundImage: `url(/img2.jpg)` }}></div>
           <h1>The Electrifying Concert</h1>
           <p>Feel the rhythm, live the moment, and lose yourself in the sound.</p>
           <p className="event-date">October 20, 2023 | 8:00 PM</p>

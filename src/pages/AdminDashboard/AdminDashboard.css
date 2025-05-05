@@ -1,0 +1,61 @@
+/* AdminDashboard.css */
+
+/* Sidebar styling */
+.sidebar {
+  transition: width 0.3s ease;
+}
+
+/* Section header styling */
+.section-header {
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.section-header:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.section-header.active {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  border-left: 3px solid #3a506b !important;
+  color: #3a506b !important;
+  font-weight: bold !important;
+}
+
+/* Menu item styling */
+.menu-item {
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+  margin-bottom: 2px;
+}
+
+.menu-item:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.menu-item.active {
+  background-color: rgba(0, 0, 0, 0.08) !important;
+  border-left: 3px solid #3a506b !important;
+  color: #3a506b !important;
+  font-weight: 500 !important;
+}
+
+/* Chevron icon animation */
+.chevron-icon {
+  transition: transform 0.3s ease;
+}
+
+.chevron-icon.open {
+  transform: rotate(90deg);
+}
+
+/* Submenu animation */
+.submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.submenu.open {
+  max-height: 500px; /* Adjust based on your needs */
+}

@@ -16,11 +16,12 @@ import CreateVenue from './create/CreateVenue';
 import ViewVenues from './view/ViewVenues';
 import CreateEvent from './create/CreateEvent';
 import ViewEvents from './view/ViewEvents';
+import './AdminDashboard.css';
 
 function AdminDashboard() {
-    const [activeComponent, setActiveComponent] = useState('create');
+    const [activeComponent, setActiveComponent] = useState(() => 'create'); // Initialize with 'create'
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-    const [currentSection, setCurrentSection] = useState('');
+    const [currentSection, setCurrentSection] = useState('accommodation');
 
     const toggleSidebar = () => {
         setSidebarCollapsed(!sidebarCollapsed);
@@ -76,9 +77,10 @@ function AdminDashboard() {
                 position: 'relative',
                 zIndex: 1000
             }}>
-                <Sidebar 
-                    setActiveComponent={setActiveComponent} 
-                    sidebarCollapsed={sidebarCollapsed} 
+                <Sidebar
+                    activeComponent={activeComponent}
+                    setActiveComponent={setActiveComponent}
+                    sidebarCollapsed={sidebarCollapsed}
                     currentSection={currentSection}
                     setCurrentSection={setCurrentSection}
                 />
@@ -89,8 +91,8 @@ function AdminDashboard() {
                 {/* Top Navbar */}
                 <div className="navbar sticky-top bg-white shadow-sm py-2 px-4 d-flex justify-content-between align-items-center">
                     <div className="d-flex align-items-center">
-                        <button 
-                            className="btn border-0" 
+                        <button
+                            className="btn border-0"
                             onClick={toggleSidebar}
                             style={{ marginRight: '15px', color: '#495057' }}
                         >
@@ -100,21 +102,21 @@ function AdminDashboard() {
                     </div>
                     <div className="d-flex align-items-center">
                         <div className="dropdown">
-                            <button className="btn dropdown-toggle d-flex align-items-center" 
-                                type="button" 
-                                id="userDropdown" 
-                                data-bs-toggle="dropdown" 
+                            <button className="btn dropdown-toggle d-flex align-items-center"
+                                type="button"
+                                id="userDropdown"
+                                data-bs-toggle="dropdown"
                                 aria-expanded="false"
-                                style={{ 
-                                    backgroundColor: '#f8f9fa', 
+                                style={{
+                                    backgroundColor: '#f8f9fa',
                                     borderColor: '#e9ecef',
                                     color: '#495057'
                                 }}
                             >
-                                <div className="me-2 rounded-circle d-flex justify-content-center align-items-center" 
-                                    style={{ 
-                                        width: '32px', 
-                                        height: '32px', 
+                                <div className="me-2 rounded-circle d-flex justify-content-center align-items-center"
+                                    style={{
+                                        width: '32px',
+                                        height: '32px',
                                         backgroundColor: '#e9ecef',
                                         color: '#495057'
                                     }}
@@ -157,9 +159,10 @@ function AdminDashboard() {
                     ></button>
                 </div>
                 <div className="offcanvas-body">
-                    <Sidebar 
-                        setActiveComponent={setActiveComponent} 
-                        sidebarCollapsed={false} 
+                    <Sidebar
+                        activeComponent={activeComponent}
+                        setActiveComponent={setActiveComponent}
+                        sidebarCollapsed={false}
                         currentSection={currentSection}
                         setCurrentSection={setCurrentSection}
                     />
@@ -169,10 +172,19 @@ function AdminDashboard() {
     );
 }
 
-function Sidebar({ setActiveComponent, sidebarCollapsed, currentSection, setCurrentSection }) {
+function Sidebar({ activeComponent, setActiveComponent, sidebarCollapsed, currentSection, setCurrentSection }) {
+    // Initialize activeItem with the current activeComponent from parent
+    const [activeItem, setActiveItem] = useState(activeComponent || 'create');
+
+    // Update activeItem when activeComponent changes
+    useEffect(() => {
+        setActiveItem(activeComponent);
+    }, [activeComponent]);
+
     const handleMenuItemClick = (component, event) => {
         event.stopPropagation();
         setActiveComponent(component);
+        setActiveItem(component);
 
         // Auto close offcanvas in mobile view
         if (window.innerWidth < 768) {
@@ -193,7 +205,25 @@ function Sidebar({ setActiveComponent, sidebarCollapsed, currentSection, setCurr
             setCurrentSection(section);
         }
     };
-    
+
+    // Find which section contains the active component
+    const findSectionForComponent = (componentId) => {
+        for (const section of menuSections) {
+            if (section.items.some(item => item.id === componentId)) {
+                return section.id;
+            }
+        }
+        return null;
+    };
+
+    // Set the current section based on the active component when component mounts
+    useEffect(() => {
+        const sectionId = findSectionForComponent(activeItem);
+        if (sectionId && currentSection !== sectionId) {
+            setCurrentSection(sectionId);
+        }
+    }, [activeItem]);
+
     // Define menu structure for cleaner rendering
     const menuSections = [
         {
@@ -269,10 +299,10 @@ function Sidebar({ setActiveComponent, sidebarCollapsed, currentSection, setCurr
                     </div>
                 ) : (
                     <div className="d-flex align-items-center">
-                        <div className="rounded-circle d-flex justify-content-center align-items-center me-2" 
-                            style={{ 
-                                width: '40px', 
-                                height: '40px', 
+                        <div className="rounded-circle d-flex justify-content-center align-items-center me-2"
+                            style={{
+                                width: '40px',
+                                height: '40px',
                                 backgroundColor: '#3a506b',
                                 boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                             }}>
@@ -289,40 +319,36 @@ function Sidebar({ setActiveComponent, sidebarCollapsed, currentSection, setCurr
                     <div key={section.id} className="mb-1">
                         <button
                             onClick={() => toggleSection(section.id)}
-                            className={`btn d-flex align-items-center w-100 py-2 px-3 text-start border-0 ${currentSection === section.id ? 'fw-bold' : ''}`}
+                            className={`btn d-flex align-items-center w-100 py-2 px-3 text-start border-0 section-header ${currentSection === section.id ? 'active' : ''}`}
                             style={{
-                                backgroundColor: currentSection === section.id ? 'rgba(0, 0, 0, 0.03)' : 'transparent',
                                 borderRadius: '0',
                                 marginBottom: '2px',
-                                color: currentSection === section.id ? '#2c3e50' : '#495057'
+                                color: '#495057'
                             }}
                         >
                             {!sidebarCollapsed && (
                                 <>
                                     <span className="flex-grow-1">{section.title}</span>
                                     <span className="ms-2">
-                                        <i className={`bi ${currentSection === section.id ? 'bi-chevron-down' : 'bi-chevron-right'}`}></i>
+                                        <i className={`bi ${currentSection === section.id ? 'bi-chevron-down' : 'bi-chevron-right'} chevron-icon ${currentSection === section.id ? 'open' : ''}`}></i>
                                     </span>
                                 </>
                             )}
                         </button>
-                        
+
                         {/* Section Items */}
-                        {(currentSection === section.id && !sidebarCollapsed) && (
-                            <div className="ps-4 mt-1">
+                        {!sidebarCollapsed && (
+                            <div className={`ps-4 mt-1 submenu ${currentSection === section.id ? 'open' : ''}`}>
                                 {section.items.map((item) => (
                                     <button
                                         key={item.id}
-                                        className="btn btn-sm d-flex align-items-center w-100 py-2 px-3 text-start border-0"
+                                        className={`btn btn-sm d-flex align-items-center w-100 py-2 px-3 text-start border-0 menu-item ${activeItem === item.id ? 'active' : ''}`}
                                         onClick={(e) => handleMenuItemClick(item.id, e)}
-                                        style={{ 
+                                        style={{
                                             borderRadius: '0',
                                             color: '#6c757d',
-                                            fontWeight: '400',
-                                            transition: 'all 0.2s ease'
+                                            fontWeight: '400'
                                         }}
-                                        onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.02)'}
-                                        onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                                     >
                                         <span className="ms-2">{item.title}</span>
                                     </button>

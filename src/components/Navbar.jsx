@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { isAuthenticated, isAdmin } from '../utils/authUtils';
+import '../styles/Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,8 +62,8 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
       <div className="container">
-        <Link to="/" className="navbar-brand fw-bold">
-          NASCON
+        <Link to="/" className="navbar-brand fw-bold d-flex align-items-center">
+          <span className="me-1">NASCON</span>
         </Link>
 
         <button
@@ -78,22 +79,22 @@ const Navbar = () => {
         <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`}>
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link to="/" className="nav-link">
+              <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>
                 Home
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/about" className="nav-link">
+              <Link to="/about" className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}>
                 About
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/events" className="nav-link">
+              <Link to="/events" className={`nav-link ${location.pathname === '/events' ? 'active' : ''}`}>
                 Events
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/contact" className="nav-link">
+              <Link to="/contact" className={`nav-link ${location.pathname === '/contact' ? 'active' : ''}`}>
                 Contact
               </Link>
             </li>
@@ -101,12 +102,12 @@ const Navbar = () => {
             {!authenticated ? (
               <>
                 <li className="nav-item">
-                  <Link to="/signin" className="nav-link">
+                  <Link to="/signin" className={`nav-link ${location.pathname === '/signin' ? 'active' : ''}`}>
                     Login
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/signup" className="nav-link">
+                  <Link to="/signup" className={`nav-link ${location.pathname === '/signup' ? 'active' : ''}`}>
                     Sign Up
                   </Link>
                 </li>
@@ -115,7 +116,7 @@ const Navbar = () => {
               <>
                 {adminUser && (
                   <li className="nav-item">
-                    <Link to="/AdminDashboard" className="nav-link">
+                    <Link to="/AdminDashboard" className={`nav-link ${location.pathname.includes('/AdminDashboard') ? 'active' : ''}`}>
                       Admin Portal
                     </Link>
                   </li>

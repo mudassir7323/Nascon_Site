@@ -12,7 +12,8 @@ const Signup = () => {
     address: '',
     university: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    role_type: '', // No default value
   });
 
   const [error, setError] = useState('');
@@ -47,6 +48,7 @@ const Signup = () => {
     if (!apiData.phone_number) delete apiData.phone_number;
     if (!apiData.address) delete apiData.address;
     if (!apiData.university) delete apiData.university;
+    if (!apiData.role_type) delete apiData.role_type; // Remove if not selected
 
     try {
       const response = await fetch(`${BaseUrl}/users/signup`, {
@@ -184,6 +186,26 @@ const Signup = () => {
                     disabled={loading}
                     rows="2"
                   ></textarea>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="role_type" className="form-label">Role Type*</label>
+                  <select
+                    className="form-select"
+                    id="role_type"
+                    name="role_type"
+                    value={formData.role_type}
+                    onChange={handleChange}
+                    required
+                    disabled={loading}
+                  >
+                    <option value="" disabled>Select a role</option> {/* Added this line */}
+                    <option value="Participant">Participant</option>
+                    <option value="Event Organizer">Event Organizer</option>
+                    <option value="Sponsor">Sponsor</option>
+                    <option value="Judge">Judge</option>
+                  </select>
+                  <div className="form-text">Select the type of account you want to create.</div>
                 </div>
 
                 <div className="row mb-3">

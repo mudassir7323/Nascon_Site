@@ -17,6 +17,10 @@ import ViewVenues from './view/ViewVenues';
 import CreateEvent from './create/CreateEvent';
 import ViewEvents from './view/ViewEvents';
 import './AdminDashboard.css';
+import CreateEventSchedule from './create/CreateEventSchedule';
+import ViewEventSchedules from './view/ViewEventSchedules';
+import ViewTeams from './view/ViewTeams';
+import ViewPayments from './view/ViewPayments';
 
 function AdminDashboard() {
     const [activeComponent, setActiveComponent] = useState(() => 'create'); // Initialize with 'create'
@@ -59,6 +63,14 @@ function AdminDashboard() {
                 return <CreateEvent />;
             case 'viewEvents':
                 return <ViewEvents />;
+            case 'createEventSchedule':
+                return <CreateEventSchedule />;
+            case 'viewEventSchedules':
+                return <ViewEventSchedules />;
+            case 'viewTeams':
+                return <ViewTeams />;
+            case 'viewPayments':
+                return <ViewPayments />;
             default:
                 return <h4 className="text-center">Please select an option</h4>;
         }
@@ -285,6 +297,28 @@ function Sidebar({ activeComponent, setActiveComponent, sidebarCollapsed, curren
             items: [
                 { id: 'createVenue', title: 'Create Venue' },
                 { id: 'viewVenues', title: 'View Venues' }
+            ]
+        },
+        {
+            id: 'eventSchedules',
+            title: 'Event Schedules',
+            items: [
+                { id: 'createEventSchedule', title: 'Create Schedule' },
+                { id: 'viewEventSchedules', title: 'View Schedule' }
+            ]
+        },
+        {
+            id: 'teams',
+            title: 'Teams',
+            items: [
+                { id: 'viewTeams', title: 'View Teams' }
+            ]
+        },
+        {
+            id: 'payments',
+            title: 'Payments',
+            items: [
+                { id: 'viewPayments', title: 'View Payments' }
             ]
         }
     ];

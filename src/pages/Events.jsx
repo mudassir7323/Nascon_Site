@@ -3,17 +3,20 @@ import '../styles/Home.css';
 import BaseUrl from '../BaseUrl';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import RegisterEvents from './RegiterEvents'; 
 
 function Events() {
   const [events, setEvents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalEvents, setTotalEvents] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [selectedId, setSelectedId] = useState(null);
 
   const baseUrl = BaseUrl;
-  const accessToken = localStorage.getItem("access_token"); // Get access token from localStorage
+  const accessToken = localStorage.getItem("access_token");
 
-  // Fetch events from the API
+  console.log("Initial selectedId:", selectedId); // Debugging line
+
   useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
@@ -21,7 +24,7 @@ function Events() {
         const response = await axios.get(
           `${baseUrl}/events/`, {
             params: {
-              skip: (currentPage - 1) * 10, // Use a reasonable pagination number like 10 events per page
+              skip: (currentPage - 1) * 10,
               limit: 10
             },
             headers: {
@@ -40,8 +43,7 @@ function Events() {
     fetchEvents();
   }, [currentPage]);
 
-  // Handle pagination
-  const totalPages = Math.ceil(totalEvents / 10); // 10 events per page
+  const totalPages = Math.ceil(totalEvents / 10);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -49,11 +51,22 @@ function Events() {
     }
   };
 
+  const handleEventClick = (id) => {
+    console.log("Get Tickets clicked for event ID:", id); // Debugging line
+    setSelectedId(id);
+  };
+
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   };
+
+  if (selectedId !== null) {
+    return (
+      <RegisterEvents id={selectedId} /> // Renamed component usage
+    );
+  }
 
   return (
     <>
@@ -69,9 +82,14 @@ function Events() {
                 <h1>{event.event_name}</h1>
                 <p>{event.description}</p>
                 <p className="event-date">{new Date(event.registration_deadline).toLocaleString()}</p>
-                <Link to={`/events/${event.id}`}>
-                  <button className="btn_cards">Get Tickets</button>
-                </Link>
+                
+                  <button
+                    className="btn_cards"
+                    onClick={() => handleEventClick(event.id)}
+                  >
+                    Get Tickets
+                  </button>
+                
               </div>
             ))}
           </div>

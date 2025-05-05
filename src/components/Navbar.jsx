@@ -94,6 +94,12 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="nav-item">
+              <Link to="/my-registrations" className={`nav-link ${location.pathname === '/events' ? 'active' : ''}`}>
+                My Registrations
+              </Link>
+            </li>
+
+            <li className="nav-item">
               <Link to="/contact" className={`nav-link ${location.pathname === '/contact' ? 'active' : ''}`}>
                 Contact
               </Link>

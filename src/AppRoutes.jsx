@@ -10,6 +10,7 @@ import Signup from './pages/Signup'
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard'
 import Events from "./pages/Events"
 import MyRegistrations from "./pages/MyRegistrations"
+import MyPayments from "./pages/MyPayments"
 // Import components
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -47,7 +48,13 @@ function AppRoutes() {
         }
       />
 
-
+      <Route path = "my-payments"
+      element={
+      <ProtectedRoute>
+      <MyPayments />
+      </ProtectedRoute>
+    }
+/>
 
 
 

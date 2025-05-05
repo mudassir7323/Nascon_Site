@@ -94,11 +94,15 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/my-registrations" className={`nav-link ${location.pathname === '/events' ? 'active' : ''}`}>
+              <Link to="/my-registrations" className={`nav-link ${location.pathname === '/my-registrations' ? 'active' : ''}`}>
                 My Registrations
               </Link>
             </li>
-
+            <li className="nav-item">
+              <Link to="/my-payments" className={`nav-link ${location.pathname === '/my-payments' ? 'active' : ''}`}>
+                My Payments
+              </Link>
+            </li>
             <li className="nav-item">
               <Link to="/contact" className={`nav-link ${location.pathname === '/contact' ? 'active' : ''}`}>
                 Contact

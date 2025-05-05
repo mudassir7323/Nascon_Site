@@ -12,6 +12,9 @@ function RegisterEvents({ id }) {
   const [registrationLoading, setRegistrationLoading] = useState(false);
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [registrationError, setRegistrationError] = useState(null);
+  const [eventDetails, setEventDetails] = useState(null);
+  const [loadingEventDetails, setLoadingEventDetails] = useState(true);
+  const [errorEventDetails, setErrorEventDetails] = useState(null);
 
   const baseUrl = BaseUrl;
   const accessToken = localStorage.getItem('access_token');
@@ -35,12 +38,31 @@ function RegisterEvents({ id }) {
       }
     };
 
+    const fetchEventDetails = async () => {
+      setLoadingEventDetails(true);
+      setErrorEventDetails(null);
+      try {
+        const response = await axios.get(`${baseUrl}/events/public/${id}/details`, {
+          headers: {
+            accept: 'application/json',
+          },
+        });
+        setEventDetails(response.data);
+      } catch (error) {
+        console.error('Error fetching event details:', error);
+        setErrorEventDetails('Failed to load event details.');
+      } finally {
+        setLoadingEventDetails(false);
+      }
+    };
+
     // Optional: get user_id from localStorage or a profile API
     const storedUserId = localStorage.getItem('user_id');
     if (storedUserId) setUserId(parseInt(storedUserId));
 
     fetchTeams();
-  }, []);
+    fetchEventDetails();
+  }, [accessToken, baseUrl, id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,7 +72,7 @@ function RegisterEvents({ id }) {
     setRegistrationError(null);
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `${baseUrl}/event-registrations/`,
         {
           event_id: parseInt(id),
@@ -81,7 +103,26 @@ function RegisterEvents({ id }) {
     <div className="container mt-5">
       <div className="card">
         <div className="card-body">
-          <h2 className="card-title mb-4">Register for Event #{id}</h2>
+          {loadingEventDetails ? (
+            <h2 className="card-title mb-4">Loading Event Details...</h2>
+          ) : errorEventDetails ? (
+            <div className="alert alert-danger">{errorEventDetails}</div>
+          ) : eventDetails ? (
+            <>
+              <h2 className="card-title mb-4">Register for {eventDetails.event_name}</h2>
+              <p className="card-text"><strong>Description:</strong> {eventDetails.description}</p>
+              <p className="card-text"><strong>Registration Deadline:</strong> {new Date(eventDetails.registration_deadline).toLocaleString()}</p>
+              <p className="card-text"><strong>Registration Fee:</strong> {eventDetails.registration_fee}</p>
+              {eventDetails.is_team_event && (
+                <p className="card-text">
+                  <strong>Team Size:</strong> {eventDetails.min_team_size} - {eventDetails.max_team_size} participants
+                </p>
+              )}
+            </>
+          ) : (
+            <h2 className="card-title mb-4">Register for Event #{id}</h2>
+          )}
+
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label htmlFor="team" className="form-label">
@@ -95,6 +136,7 @@ function RegisterEvents({ id }) {
                   id="team"
                   value={selectedTeamId}
                   onChange={(e) => setSelectedTeamId(e.target.value)}
+                  disabled={eventDetails && !eventDetails.is_team_event}
                 >
                   <option value="">-- No Team --</option>
                   {teams.map((team) => (
@@ -103,6 +145,9 @@ function RegisterEvents({ id }) {
                     </option>
                   ))}
                 </select>
+              )}
+              {eventDetails && !eventDetails.is_team_event && (
+                <small className="form-text text-muted">This is not a team event.</small>
               )}
             </div>
 

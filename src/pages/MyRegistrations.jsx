@@ -26,7 +26,7 @@ function ViewEventRegistrationUSER() {
             },
           }
         );
-        setRegistrations(response.data.registrations || []); // Directly use response.data.registrations
+        setRegistrations(response.data.registrations || []);
       } catch (err) {
         console.error('Error fetching event registrations:', err);
         setError('Failed to load your event registrations.');
@@ -63,9 +63,9 @@ function ViewEventRegistrationUSER() {
         <table className="table table-striped">
           <thead>
             <tr>
-              <th>Event ID</th> {/* Displaying event_id for now */}
+              <th>Event Name</th>
               <th>Registration Date</th>
-              <th>Team ID</th> {/* Displaying team_id for now */}
+              <th>Team Name</th>
               <th>Payment Status</th>
               <th>Confirmation Code</th>
               <th>Actions</th>
@@ -74,14 +74,19 @@ function ViewEventRegistrationUSER() {
           <tbody>
             {registrations.map((registration) => (
               <tr key={registration.id}>
-                <td>{registration.event_id}</td> {/* Displaying event_id */}
+                <td>{registration.event_name || 'N/A'}</td>
                 <td>{new Date(registration.registration_date).toLocaleDateString()}</td>
-                <td>{registration.team_id || 'N/A'}</td> {/* Displaying team_id */}
+                <td>{registration.team_name || 'N/A'}</td>
                 <td>{registration.payment_status}</td>
                 <td>{registration.confirmation_code}</td>
                 <td>
                   {/* You can add action buttons here */}
                   <button className="btn btn-sm btn-outline-info me-2" disabled>View Details</button>
+                  {registration.event_id && (
+                    <Link to={`/events/${registration.event_id}`} className="btn btn-sm btn-info">
+                      View Event
+                    </Link>
+                  )}
                   {/* Add a cancellation button or other actions as needed */}
                 </td>
               </tr>

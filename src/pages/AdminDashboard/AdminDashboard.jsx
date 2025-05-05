@@ -26,6 +26,8 @@ import ViewFinancialReports from './view/ViewFinancialReports';
 import CreateExpense from './create/CreateExpense';
 import ViewExpenses from './view/ViewExpnses';
 import ViewEventRegistration from './view/ViewEventRegistration';
+import CreateSponsorPackage from './create/CreateSponsorPackage';
+import ViewSponsorPackages from './view/ViewSponsorPackages';
 
 function AdminDashboard() {
     const [activeComponent, setActiveComponent] = useState(() => 'create'); // Initialize with 'create'
@@ -86,6 +88,10 @@ function AdminDashboard() {
                 return <ViewExpenses />;
             case 'viewRegistration':
                 return <ViewEventRegistration />;
+                case 'createSponsorPackage':
+                return <CreateSponsorPackage />;
+            case 'viewSponsorPackages':
+                return <ViewSponsorPackages />;
             default:
                 return <h4 className="text-center">Please select an option</h4>;
         }
@@ -357,6 +363,14 @@ function Sidebar({ activeComponent, setActiveComponent, sidebarCollapsed, curren
             title: 'Event Registration',
             items: [
                 { id: 'viewRegistration', title: 'View Registration' }
+            ]
+        },
+        {
+            id: 'sponsorPackages',
+            title: 'Sponsor Package',
+            items: [
+                { id: 'createSponsorPackage', title: 'Create' },
+                { id: 'viewSponsorPackages', title: 'View' }
             ]
         }
     ];

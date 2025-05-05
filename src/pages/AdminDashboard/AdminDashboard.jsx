@@ -269,8 +269,14 @@ function Sidebar({ setActiveComponent, sidebarCollapsed, currentSection, setCurr
                     </div>
                 ) : (
                     <div className="d-flex align-items-center">
-                        <div className="rounded-circle bg-light d-flex justify-content-center align-items-center me-2" style={{ width: '40px', height: '40px', border: '1px solid #dee2e6' }}>
-                            <i className="bi bi-person" style={{ fontSize: '18px', color: '#3a506b' }}></i>
+                        <div className="rounded-circle d-flex justify-content-center align-items-center me-2" 
+                            style={{ 
+                                width: '40px', 
+                                height: '40px', 
+                                backgroundColor: '#3a506b',
+                                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                            }}>
+                            <i className="bi bi-person-fill" style={{ fontSize: '20px', color: '#ffffff' }}></i>
                         </div>
                         <h4 className="mb-0" style={{ color: '#3a506b', fontWeight: '600' }}>Admin Panel</h4>
                     </div>

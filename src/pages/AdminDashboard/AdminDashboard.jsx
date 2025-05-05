@@ -21,6 +21,10 @@ import CreateEventSchedule from './create/CreateEventSchedule';
 import ViewEventSchedules from './view/ViewEventSchedules';
 import ViewTeams from './view/ViewTeams';
 import ViewPayments from './view/ViewPayments';
+import CreateFinancialReport from './create/CreateFinancialReports';
+import ViewFinancialReports from './view/ViewFinancialReports';
+import CreateExpense from './create/CreateExpense';
+import ViewExpenses from './view/ViewExpnses';
 
 function AdminDashboard() {
     const [activeComponent, setActiveComponent] = useState(() => 'create'); // Initialize with 'create'
@@ -71,6 +75,14 @@ function AdminDashboard() {
                 return <ViewTeams />;
             case 'viewPayments':
                 return <ViewPayments />;
+            case 'createFinancialReport':
+                return <CreateFinancialReport />;
+            case 'viewFinancialRports':
+                return <ViewFinancialReports />;
+                case 'createExpense':
+                return <CreateExpense />;
+            case 'viewexpenses':
+                return <ViewExpenses />;
             default:
                 return <h4 className="text-center">Please select an option</h4>;
         }
@@ -319,6 +331,22 @@ function Sidebar({ activeComponent, setActiveComponent, sidebarCollapsed, curren
             title: 'Payments',
             items: [
                 { id: 'viewPayments', title: 'View Payments' }
+            ]
+        },
+        {
+            id: 'financialReport',
+            title: 'Financial Report',
+            items: [
+                { id: 'createFinancialReport', title: 'Create Financial Report' },
+                { id: 'viewFinancialRports', title: 'View Financial Report' }
+            ]
+        },
+        {
+            id: 'expenses',
+            title: 'Expenses',
+            items: [
+                { id: 'createExpense', title: 'Create Expenses' },
+                { id: 'viewexpenses', title: 'View Expenses' }
             ]
         }
     ];

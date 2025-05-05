@@ -11,13 +11,17 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+    "add": "^2.0.6",
     "axios": "^1.9.0",
     "bootstrap": "^5.3.5",
     "bootstrap-icons": "^1.11.3",
+    "dialog": "^0.3.1",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.5.3"
+    "react-router-dom": "^7.5.3",
+    "select": "^1.1.2",
+    "shadcn-ui": "^0.9.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",

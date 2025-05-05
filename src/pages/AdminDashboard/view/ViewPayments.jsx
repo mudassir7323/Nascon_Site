@@ -2,23 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import BaseUrl from '../../../BaseUrl';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button } from 'react-bootstrap'; // Import Bootstrap Button
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
+import 'bootstrap/dist/js/bootstrap.min.js'; // Import Bootstrap JS for modal
+import { Button } from 'react-bootstrap';
+import * as bootstrap from 'bootstrap'; // Import the bootstrap module
 
 function ViewPayments() {
     const [payments, setPayments] = useState([]);
@@ -29,6 +15,12 @@ function ViewPayments() {
     const [selectedPaymentId, setSelectedPaymentId] = useState(null);
     const [newStatus, setNewStatus] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [statusOptions, setStatusOptions] = useState([
+        "Pending",
+        "Completed",
+        "Failed",
+        "Refunded"
+    ]);
 
     const accessToken = localStorage.getItem('access_token');
 
@@ -86,6 +78,15 @@ function ViewPayments() {
                 );
                 setIsModalOpen(false); // Close the modal
                 setNewStatus('');
+                // Close the Bootstrap modal
+                const modalElement = document.getElementById('statusModal');
+                if (modalElement) {
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+                }
+
             } else {
                 alert('Failed to update payment status.'); //  basic error handling
             }
@@ -96,11 +97,22 @@ function ViewPayments() {
     };
 
     const openStatusModal = (paymentId, currentStatus) => {
-        console.log("Status Clicked with id : ", paymentId)
         setSelectedPaymentId(paymentId);
-        setNewStatus(currentStatus); // Initialize with current status
+        setNewStatus(currentStatus); // Initialize with current status.
         setIsModalOpen(true);
+
+        // Show the Bootstrap modal
+        const modalElement = document.getElementById('statusModal');
+        if (modalElement) {
+            const modalInstance = new bootstrap.Modal(modalElement);
+            modalInstance.show();
+        }
     };
+
+    const closeStatusModal = () => {
+        setIsModalOpen(false);
+        setNewStatus('');
+    }
 
     return (
         <div className="p-4">
@@ -237,53 +249,49 @@ function ViewPayments() {
                 </>
             )}
 
-            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Change Payment Status</DialogTitle>
-                        <DialogDescription>
-                            Select the new status for payment ID {selectedPaymentId}
-                        </DialogDescription>
-                    </DialogHeader>
-                    <div className="py-4">
-                        <Select
-                            onValueChange={(value) => setNewStatus(value)}
-                            value={newStatus}
-                        >
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select a status" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="Pending">Pending</SelectItem>
-                                <SelectItem value="Completed">Completed</SelectItem>
-                                <SelectItem value="Failed">Failed</SelectItem>
-                                <SelectItem value="Refunded">Refunded</SelectItem>
-                            </SelectContent>
-                        </Select>
+            {/* Bootstrap Modal */}
+            <div className="modal fade" id="statusModal" tabIndex="-1">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">Change Payment Status</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={closeStatusModal}></button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="py-4">
+                                <select
+                                    className="form-select"
+                                    value={newStatus}
+                                    onChange={(e) => setNewStatus(e.target.value)}
+                                >
+                                    <option value="" disabled>Select a status</option>
+                                    {statusOptions.map(option => (
+                                        <option key={option} value={option}>{option}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <Button
+                                variant="outline-secondary"
+                                onClick={closeStatusModal}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                onClick={handleStatusChange}
+                                disabled={!newStatus}
+                                className="btn-primary"
+                            >
+                                Save
+                            </Button>
+                        </div>
                     </div>
-                    <DialogFooter>
-                        <Button
-                            variant="outline"
-                            onClick={() => {
-                                setIsModalOpen(false);
-                                setNewStatus('');
-                            }}
-                            className="btn-secondary" // added for consistent look
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            onClick={handleStatusChange}
-                            disabled={!newStatus}
-                            className="btn-primary" // added for consistent look
-                        >
-                            Save
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+                </div>
+            </div>
         </div>
     );
 }
 
 export default ViewPayments;
+

@@ -1,4 +1,6 @@
-function EditVenue() {
+function EditVenue(id) {
+    console.log(id);
+    
     return ( 
         <>
          Edit Venue
